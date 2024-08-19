@@ -1,70 +1,117 @@
-const Trainer = require("../models/Trainer")
+const Trainer = require("../models/Trainer");
 
-const getAllTrainer = async (req, res) => {
-    const trainer = await Trainer.find({})
-    res.status(200).json({ 
-        data: trainer,
-        success: true, 
-        message: `${req.method} - request to Trainer endpoint`,
-    });
+const getAllTrainers = async (req, res) => {
+    try {
+        const trainers = await Trainer.find({});
+        res.status(200).json({ 
+            data: trainers,
+            success: true, 
+            message: `${req.method} - request to Trainer endpoint`,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json(error);
+    }
 };
 
 const getTrainerById = async (req, res) => {
     const { id } = req.params;
-    const trainer = await Trainer.findById(id)
-    res.status(200).json({ 
-        trainer,
-        success: true, 
-        message: `${req.method} - request to Trainer endpoint`,
-    });
+    try { 
+        const trainer = await Trainer.findById(id);
+        if (!trainer) {
+            return res.status(404).json({ 
+                success: false, 
+                message: "Trainer not found",
+            });
+        }
+        res.status(200).json({ 
+            data: trainer,
+            success: true, 
+            message: `${req.method} - request to Trainer endpoint`,
+        });
+    } catch (error) {
+        console.error(error);
+        if (error.name === "ValidationError") {
+            res.status(422).json(error); 
+        } else {
+            res.status(500).json(error);
+        }
+    }
 };
 
 const createTrainer = async (req, res) => {
     const { trainer } = req.body;
-    console.log("createTrainer", trainer)
-try { 
-    const newTrainer = await Trainer.create(trainer);
-    console.log("data >>>", newTrainer);
-    res.status(200).json({ 
-        success: true, 
-        message: `${req.method} - request to Trainer endpoint`,
-    });
- } catch (error) {
-    console.log(error);
-    if (errorname === "ValidationError") {
-        console.error("Error Validating!", error);
-        res.status(422).json(error); 
-    } else {
+    try { 
+        const newTrainer = await Trainer.create(trainer);
+        res.status(201).json({ 
+            data: newTrainer,
+            success: true, 
+            message: `${req.method} - request to Trainer endpoint`,
+        });
+    } catch (error) {
         console.error(error);
-        res.status(500).json(error);
+        if (error.name === "ValidationError") {
+            res.status(422).json(error); 
+        } else {
+            res.status(500).json(error);
+        }
     }
- }
 };
 
 const updateTrainer = async (req, res) => {
     const { id } = req.params;
-    const Trainer = await Trainer.findByIdAndUpdate(id, req.body, { new: true }); 
-    res.status(200).json({ 
-        data: trainer,
-        success: true, 
-        message: `${req.method} - request to Trainer endpoint`,
-    });
+    try { 
+        const trainer = await Trainer.findByIdAndUpdate(id, req.body, { new: true });
+        if (!trainer) {
+            return res.status(404).json({ 
+                success: false, 
+                message: "Trainer not found",
+            });
+        }
+        res.status(200).json({ 
+            data: trainer,
+            success: true, 
+            message: `${req.method} - request to Trainer endpoint`,
+        });
+    } catch (error) {
+        console.error(error);
+        if (error.name === "ValidationError") {
+            res.status(422).json(error); 
+        } else {
+            res.status(500).json(error);
+        }
+    }
 };
 
-const deleteTrainer = (req, res) => {
+const deleteTrainer = async (req, res) => {
     const { id } = req.params;
-    res.status(200).json({ 
-        id,
-        success: true, 
-        message: `${req.method} - request to Trainer endpoint`,
-    });
+    try { 
+        const trainer = await Trainer.findByIdAndDelete(id);
+        if (!trainer) {
+            return res.status(404).json({ 
+                success: false, 
+                message: "Trainer not found",
+            });
+        }
+        res.status(200).json({ 
+            data: trainer,
+            success: true, 
+            message: `${req.method} - request to Trainer endpoint`,
+        });
+    } catch (error) {
+        console.error(error);
+        if (error.name === "ValidationError") {
+            res.status(422).json(error); 
+        } else {
+            res.status(500).json(error);
+        }
+    }
 };
-
 
 module.exports = { 
     createTrainer,
-    getAllTrainer,
+    getAllTrainers,
     getTrainerById, 
     updateTrainer, 
     deleteTrainer
-};   
+};

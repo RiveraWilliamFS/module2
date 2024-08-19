@@ -1,65 +1,112 @@
-const Pokemon = require("../models/Pokemon")
+const Pokemon = require("../models/Pokemon");
 
 const getAllPokemon = async (req, res) => {
-    const pokemons = await Pokemon.find({})
-    res.status(200).json({ 
-        data: pokemons,
-        success: true, 
-        message: `${req.method} - request to Pokemon endpoint`,
-    });
+    try {
+        const pokemons = await Pokemon.find({});
+        res.status(200).json({ 
+            data: pokemons,
+            success: true, 
+            message: `${req.method} - request to Pokemon endpoint`,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json(error);
+    }
 };
 
 const getPokemonById = async (req, res) => {
     const { id } = req.params;
-    const pokemon = await Pokemon.findById(id)
-    res.status(200).json({ 
-        pokemon,
-        success: true, 
-        message: `${req.method} - request to Pokemon endpoint`,
-    });
+    try { 
+        const pokemon = await Pokemon.findById(id);
+        if (!pokemon) {
+            return res.status(404).json({ 
+                success: false, 
+                message: "Pokemon not found",
+            });
+        }
+        res.status(200).json({ 
+            data: pokemon,
+            success: true, 
+            message: `${req.method} - request to Pokemon endpoint`,
+        });
+    } catch (error) {
+        console.error(error);
+        if (error.name === "ValidationError") {
+            res.status(422).json(error); 
+        } else {
+            res.status(500).json(error);
+        }
+    }
 };
 
 const createPokemon = async (req, res) => {
     const { pokemon } = req.body;
-    console.log("createPokemon", pokemon)
-try { 
-    const newPokemon = await Pokemon.create(pokemon);
-    console.log("data >>>", newPokemon);
-    res.status(200).json({ 
-        success: true, 
-        message: `${req.method} - request to Pokemon endpoint`,
-    });
- } catch (error) {
-    console.log(error);
-    if (errorname === "ValidationError") {
-        console.error("Error Validating!", error);
-        res.status(422).json(error); 
-    } else {
+    try { 
+        const newPokemon = await Pokemon.create(pokemon);
+        res.status(201).json({ 
+            data: newPokemon,
+            success: true, 
+            message: `${req.method} - request to Pokemon endpoint`,
+        });
+    } catch (error) {
         console.error(error);
-        res.status(500).json(error);
+        if (error.name === "ValidationError") {
+            res.status(422).json(error); 
+        } else {
+            res.status(500).json(error);
+        }
     }
- }
 };
 
 const updatePokemon = async (req, res) => {
     const { id } = req.params;
-    const Pokemon = await Pokemon.findByIdAndUpdate(id, req.body, { new: true }); 
-    res.status(200).json({ 
-        data: pokemon,
-        success: true, 
-        message: `${req.method} - request to Pokemon endpoint`,
-    });
+    try { 
+        const pokemon = await Pokemon.findByIdAndUpdate(id, req.body, { new: true });
+        if (!pokemon) {
+            return res.status(404).json({ 
+                success: false, 
+                message: "Pokemon not found",
+            });
+        }
+        res.status(200).json({ 
+            data: pokemon,
+            success: true, 
+            message: `${req.method} - request to Pokemon endpoint`,
+        });
+    } catch (error) {
+        console.error(error);
+        if (error.name === "ValidationError") {
+            res.status(422).json(error); 
+        } else {
+            res.status(500).json(error);
+        }
+    }
 };
 
-const deletePokemon = (req, res) => {
+const deletePokemon = async (req, res) => {
     const { id } = req.params;
-    res.status(200).json({ 
-        id,
-        success: true, 
-        message: `${req.method} - request to Pokemon endpoint`,
-    });
+    try { 
+        const pokemon = await Pokemon.findByIdAndDelete(id);
+        if (!pokemon) {
+            return res.status(404).json({ 
+                success: false, 
+                message: "Pokemon not found",
+            });
+        }
+        res.status(200).json({ 
+            data: pokemon,
+            success: true, 
+            message: `${req.method} - request to Pokemon endpoint`,
+        });
+    } catch (error) {
+        console.error(error);
+        if (error.name === "ValidationError") {
+            res.status(422).json(error); 
+        } else {
+            res.status(500).json(error);
+        }
+    }
 };
-
 
 module.exports = { 
     createPokemon,
@@ -67,4 +114,4 @@ module.exports = {
     getPokemonById, 
     updatePokemon, 
     deletePokemon
-};   
+};

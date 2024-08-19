@@ -2,6 +2,14 @@ const mongoose = require("mongoose");
 
 const trainerSchema = new mongoose.Schema (
     {
+        name: {
+                type: String,
+                required: [true, "You are required to have an Trainer"],
+                unique: [true, "You can only have one Trainer of that name"],
+                trim: true,
+                maxlength: [50, 'Your name is too long'],
+            },
+
         title: {
             type: String,
             required: true,

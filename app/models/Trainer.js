@@ -12,11 +12,11 @@ const trainerSchema = new mongoose.Schema (
             type: [String], 
             required: true, 
             enum:[
-                "Badges",
-                "Special Items",
-                "Fighting Tactics",
-                "Health",
-                "Pokeball Types",
+                "Fire",
+                "Water",
+                "Grass",
+                "Earth",
+                "Electric",
                 "Other",
             ],
      },
@@ -25,13 +25,13 @@ const trainerSchema = new mongoose.Schema (
         min: [1, "Rating must be at least 1"],
         max: [10, "Rating cannot be more than 10"]
      },
-     pokemon: {
+     trainer: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Pokemon",
+        ref: "Trainer",
      },
     }, 
     { timestamps: true }
     );
 
-    module.exports = mongoose.model("Pokemon", pokemonSchema)
+    module.exports = mongoose.model("Trainer", trainerSchema)
 

@@ -1,13 +1,13 @@
 const router = require("express").Router();
 const {
     createTrainer,
-    getAllTrainer,
+    getAllTrainers,
     getTrainerById,
     updateTrainer ,
     deleteTrainer
 } = require("../controller/trainerController");
 
-router.get("/", getAllTrainer);
+router.get("/", getAllTrainers);
 
 router.get("/:id", getTrainerById);
 

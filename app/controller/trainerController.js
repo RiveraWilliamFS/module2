@@ -2,9 +2,9 @@ const Trainer = require("../models/Trainer");
 
 const getAllTrainers = async (req, res) => {
     try {
-        const trainers = await Trainer.find({});
+        const trainer = await Trainer.find({});
         res.status(200).json({ 
-            data: trainers,
+            data: trainer,
             success: true, 
             message: `${req.method} - request to Trainer endpoint`,
         });

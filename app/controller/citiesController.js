@@ -1,12 +1,12 @@
-const Trainer = require("../models/Trainer");
+const Cities = require("../models/Cities");
 
-const getAllTrainers = async (req, res) => {
+const getAllCities = async (req, res) => {
     try {
-        const trainer = await Trainer.find({});
+        const cities = await Cities.find({});
         res.status(200).json({ 
-            data: trainer,
+            data: cities,
             success: true, 
-            message: `${req.method} - request to Trainer endpoint`,
+            message: `${req.method} - request to Cities endpoint`,
         });
     } catch (error) {
         console.error(error);
@@ -14,20 +14,20 @@ const getAllTrainers = async (req, res) => {
     }
 };
 
-const getTrainerById = async (req, res) => {
+const getCitiesById = async (req, res) => {
     const { id } = req.params;
     try { 
-        const trainer = await Trainer.findById(id);
-        if (!trainer) {
+        const cities = await Cities.findById(id);
+        if (!cities) {
             return res.status(404).json({ 
                 success: false, 
-                message: "Trainer not found",
+                message: "Cities not found",
             });
         }
         res.status(200).json({ 
-            data: trainer,
+            data: cities,
             success: true, 
-            message: `${req.method} - request to Trainer endpoint`,
+            message: `${req.method} - request to Cities endpoint`,
         });
     } catch (error) {
         console.error(error);
@@ -39,15 +39,14 @@ const getTrainerById = async (req, res) => {
     }
 };
 
-const createTrainer = async (req, res) => {
-    const { trainer } = req.body;
-    console.log("trainer", trainer)
+const createCities = async (req, res) => {
+    const { cities } = req.body;
     try { 
-        const newTrainer = await Trainer.create(trainer);
+        const newCities = await Cities.create(cities);
         res.status(201).json({ 
-            data: newTrainer,
+            data: newCities,
             success: true, 
-            message: `${req.method} - request to Trainer endpoint`,
+            message: `${req.method} - request to Cities endpoint`,
         });
     } catch (error) {
         console.error(error);
@@ -59,20 +58,20 @@ const createTrainer = async (req, res) => {
     }
 };
 
-const updateTrainer = async (req, res) => {
+const updateCities = async (req, res) => {
     const { id } = req.params;
     try { 
-        const trainer = await Trainer.findByIdAndUpdate(id, req.body, { new: true });
-        if (!trainer) {
+        const cities = await Cities.findByIdAndUpdate(id, req.body, { new: true });
+        if (!cities) {
             return res.status(404).json({ 
                 success: false, 
-                message: "Trainer not found",
+                message: "Cities not found",
             });
         }
         res.status(200).json({ 
-            data: trainer,
+            data: cities,
             success: true, 
-            message: `${req.method} - request to Trainer endpoint`,
+            message: `${req.method} - request to Cities endpoint`,
         });
     } catch (error) {
         console.error(error);
@@ -84,20 +83,20 @@ const updateTrainer = async (req, res) => {
     }
 };
 
-const deleteTrainer = async (req, res) => {
+const deleteCities = async (req, res) => {
     const { id } = req.params;
     try { 
-        const trainer = await Trainer.findByIdAndDelete(id);
-        if (!trainer) {
+        const cities = await Cities.findByIdAndDelete(id);
+        if (!cities) {
             return res.status(404).json({ 
                 success: false, 
-                message: "Trainer not found",
+                message: "Cities not found",
             });
         }
         res.status(200).json({ 
-            data: trainer,
+            data: cities,
             success: true, 
-            message: `${req.method} - request to Trainer endpoint`,
+            message: `${req.method} - request to Cities endpoint`,
         });
     } catch (error) {
         console.error(error);
@@ -110,9 +109,9 @@ const deleteTrainer = async (req, res) => {
 };
 
 module.exports = { 
-    createTrainer,
-    getAllTrainers,
-    getTrainerById, 
-    updateTrainer, 
-    deleteTrainer
+    createCities,
+    getAllCities,
+    getCitiesById, 
+    updateCities, 
+    deleteCities
 };

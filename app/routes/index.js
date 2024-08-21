@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const pokemonRoutes= require("./pokemonRoutes");
+const trainerRoutes= require("./trainerRoutes");
+const citiesRoutes= require("./citiesRoutes")
 
 router.get("/", (req, res) => {
     res
@@ -9,5 +11,7 @@ router.get("/", (req, res) => {
 });
 
 router.use("/pokemon", pokemonRoutes);
+router.use("/trainers", trainerRoutes)
+router.use("/cities", citiesRoutes)
 
 module.exports = router;

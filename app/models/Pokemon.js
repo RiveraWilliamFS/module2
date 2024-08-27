@@ -36,7 +36,13 @@ const pokemonsSchema = new mongoose.Schema({
             "Electric",
             "Other",
         ],
+    },
+
+    trainer: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Trainer'
     }
+
 }, 
 { timestamps: true });
 

@@ -33,10 +33,13 @@ const trainerSchema = new mongoose.Schema (
         min: [1, "Rating must be at least 1"],
         max: [10, "Rating cannot be more than 10"]
      },
-     trainer: {
+
+     pokemon: [
+     {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Trainer",
-     },
+        ref: "Pokemon"
+    },
+     ],
     }, 
     { timestamps: true }
     );

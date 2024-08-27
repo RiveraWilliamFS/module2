@@ -1,4 +1,6 @@
 const Trainer = require("../models/Trainer");
+const Pokemon = require("../models/Pokemon");
+
 
 const getAllTrainers = async (req, res) => {
     try {

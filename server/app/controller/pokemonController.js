@@ -29,11 +29,11 @@ const Trainer = require("../models/Trainer")
     query.skip(skip).limit(limit);
     console.log('Query after skip and limit:', query); 
 
-    const pokemons = await query;
+    const pokemon = await query;
     res.status(200).json({
-        data: pokemons,
+        data: pokemon,
         success: true,
-        message: 'Successfully fetched Pokemons',
+        message: 'Successfully fetched Pokemon',
     });
 };
 

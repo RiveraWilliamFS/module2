@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import SearchBar from './components/SearchBar'
-import API from "./API"
+import API from "./API.js"
 import './App.css'
 
 function App() {
-  const handleSearch = (evt) => {
+  const handleSearch = async (evt) => {
     evt.preventDefault();
-    console.log(evt.target.search.value);
-    console.log(evt.target.name.value);
+    const data = await API.fetchPokemon();
+    console.log(data);
   };
 
   return (
@@ -19,3 +19,9 @@ function App() {
 }
 
 export default App
+
+
+
+
+// console.log(evt.target.search.value);
+// console.log(evt.target.name.value);
